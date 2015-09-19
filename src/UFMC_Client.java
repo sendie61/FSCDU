@@ -67,52 +67,52 @@ public class UFMC_Client {
 		
 		JPanel tabLooks = new JPanel();
 		tabbedPane.addTab("Looks", null, tabLooks, null);
-		tabLooks.setLayout(null);
+		
+		JPanel tabPos = new JPanel();
+		tabbedPane.addTab("Position", null, tabPos, null);
+		tabPos.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("CDU window");
 		lblNewLabel.setForeground(Color.GRAY);
 		lblNewLabel.setBounds(10, 11, 70, 14);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		tabLooks.add(lblNewLabel);
+		tabPos.add(lblNewLabel);
 		
 		JLabel lblTop = new JLabel("Top:");
 		lblTop.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblTop.setBounds(90, 11, 46, 14);
-		tabLooks.add(lblTop);
+		tabPos.add(lblTop);
 		
 		JLabel lblLeft = new JLabel("Left:");
 		lblLeft.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblLeft.setBounds(90, 36, 46, 14);
-		tabLooks.add(lblLeft);
+		tabPos.add(lblLeft);
 		
 		JSpinner nCDUTop = new JSpinner();
 		nCDUTop.setBounds(146, 8, 58, 20);
-		tabLooks.add(nCDUTop);
+		tabPos.add(nCDUTop);
 		
 		JSpinner nCDULeft = new JSpinner();
 		nCDULeft.setBounds(146, 33, 58, 20);
-		tabLooks.add(nCDULeft);
+		tabPos.add(nCDULeft);
 		
 		JLabel lblHeight = new JLabel("Height:");
 		lblHeight.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblHeight.setBounds(232, 11, 46, 14);
-		tabLooks.add(lblHeight);
+		tabPos.add(lblHeight);
 		
 		JLabel lblWidth = new JLabel("Width:");
 		lblWidth.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblWidth.setBounds(232, 36, 46, 14);
-		tabLooks.add(lblWidth);
+		tabPos.add(lblWidth);
 		
 		JSpinner nCDUHeight = new JSpinner();
 		nCDUHeight.setBounds(288, 8, 58, 20);
-		tabLooks.add(nCDUHeight);
+		tabPos.add(nCDUHeight);
 		
 		JSpinner nCDUWidth = new JSpinner();
 		nCDUWidth.setBounds(288, 33, 58, 20);
-		tabLooks.add(nCDUWidth);
-		
-		JPanel tabPosition = new JPanel();
-		tabbedPane.addTab("Position", null, tabPosition, null);
+		tabPos.add(nCDUWidth);
 		
 		JPanel tabNetwork = new JPanel();
 		tabbedPane.addTab("Network", null, tabNetwork, null);
