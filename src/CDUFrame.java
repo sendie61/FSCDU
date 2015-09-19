@@ -8,7 +8,9 @@ import java.awt.Window.Type;
 import java.awt.Color;
 import java.awt.Dialog.ModalExclusionType;
 
-
+//
+// CDUFrame represents the actual content of the FMC module
+//
 public class CDUFrame extends JFrame {
 
 	private JPanel contentPane;
@@ -21,10 +23,9 @@ public class CDUFrame extends JFrame {
 	}
 	
 	private void initialize() {
-		setTitle("CDU");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 400, 300);
-		setUndecorated(true);
+		setUndecorated(true);  // No title bar nor border
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.BLACK);
 		setContentPane(contentPane);		
