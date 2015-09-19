@@ -17,7 +17,7 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 
 //
-// CDUFrame represents the actual content of the FMC module
+// CDUFrame represents the actual content of the  FMC module
 //
 public class CDUFrame extends JFrame {
 
