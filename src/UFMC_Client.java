@@ -1,6 +1,17 @@
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JButton;
+import java.awt.BorderLayout;
+import javax.swing.SwingConstants;
+import java.awt.FlowLayout;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.Box;
+import java.awt.GridLayout;
+import javax.swing.JTabbedPane;
+import javax.swing.JPanel;
 
 
 //import java.awt.*;
@@ -38,10 +49,29 @@ public class UFMC_Client {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.setResizable(false);
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		JButton btnApply = new JButton("Apply");
+		btnApply.setBounds(182, 237, 89, 23);
+		frame.getContentPane().add(btnApply);
+		
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setBounds(0, 0, 444, 226);
+		frame.getContentPane().add(tabbedPane);
+		
+		JPanel tabLooks = new JPanel();
+		tabbedPane.addTab("Looks", null, tabLooks, null);
+		
+		JPanel tabPosition = new JPanel();
+		tabbedPane.addTab("Position", null, tabPosition, null);
+		
+		JPanel tabNetwork = new JPanel();
+		tabbedPane.addTab("Network", null, tabNetwork, null);
+		
 		CDUWindow = new CDUFrame();
 		CDUWindow.setVisible(true);
 	}
-
 }
