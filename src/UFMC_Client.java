@@ -2,19 +2,34 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
+
 import java.awt.BorderLayout;
+
 import javax.swing.SwingConstants;
+
 import java.awt.FlowLayout;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.Box;
+import javax.swing.Spring;
+
 import java.awt.GridLayout;
+
 import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+
 import java.awt.Color;
+
 import javax.swing.JSpinner;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.JTextField;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 //import java.awt.*;
@@ -24,6 +39,10 @@ public class UFMC_Client {
 
 	private JFrame frame;
 	private CDUFrame CDUWindow;
+	private JTextField nTop;
+	private JTextField nLeft;
+	private JTextField nHeight;
+	private JTextField nWidth;
 	/**
 	 * Launch the application.
 	 */
@@ -58,6 +77,11 @@ public class UFMC_Client {
 		frame.getContentPane().setLayout(null);
 		
 		JButton btnApply = new JButton("Apply");
+		btnApply.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				drawCDU();
+			}
+		});
 		btnApply.setBounds(182, 237, 89, 23);
 		frame.getContentPane().add(btnApply);
 		
@@ -88,14 +112,6 @@ public class UFMC_Client {
 		lblLeft.setBounds(90, 36, 46, 14);
 		tabPos.add(lblLeft);
 		
-		JSpinner nCDUTop = new JSpinner();
-		nCDUTop.setBounds(146, 8, 58, 20);
-		tabPos.add(nCDUTop);
-		
-		JSpinner nCDULeft = new JSpinner();
-		nCDULeft.setBounds(146, 33, 58, 20);
-		tabPos.add(nCDULeft);
-		
 		JLabel lblHeight = new JLabel("Height:");
 		lblHeight.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblHeight.setBounds(232, 11, 46, 14);
@@ -106,18 +122,42 @@ public class UFMC_Client {
 		lblWidth.setBounds(232, 36, 46, 14);
 		tabPos.add(lblWidth);
 		
-		JSpinner nCDUHeight = new JSpinner();
-		nCDUHeight.setBounds(288, 8, 58, 20);
-		tabPos.add(nCDUHeight);
+		nTop = new JTextField();
+		nTop.setText("25");
+		nTop.setBounds(146, 8, 46, 20);
+		tabPos.add(nTop);
+		nTop.setColumns(10);
 		
-		JSpinner nCDUWidth = new JSpinner();
-		nCDUWidth.setBounds(288, 33, 58, 20);
-		tabPos.add(nCDUWidth);
+		nLeft = new JTextField();
+		nLeft.setText("25");
+		nLeft.setColumns(10);
+		nLeft.setBounds(146, 33, 46, 20);
+		tabPos.add(nLeft);
+		
+		nHeight = new JTextField();
+		nHeight.setText("300");
+		nHeight.setColumns(10);
+		nHeight.setBounds(288, 8, 46, 20);
+		tabPos.add(nHeight);
+		
+		nWidth = new JTextField();
+		nWidth.setText("400");
+		nWidth.setColumns(10);
+		nWidth.setBounds(288, 33, 46, 20);
+		tabPos.add(nWidth);
 		
 		JPanel tabNetwork = new JPanel();
 		tabbedPane.addTab("Network", null, tabNetwork, null);
 		
 		CDUWindow = new CDUFrame();
 		CDUWindow.setVisible(true);
+	}
+	
+	private void drawCDU() {
+		int top = Integer.parseInt(nTop.getText());
+		int left = Integer.parseInt(nLeft.getText());
+		int height = Integer.parseInt(nHeight.getText());
+		int width = Integer.parseInt(nWidth.getText());
+		CDUWindow.setBounds(left, top, width, height);
 	}
 }
