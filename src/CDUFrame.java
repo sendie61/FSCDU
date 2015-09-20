@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 //
-// CDUFrame represents the actual content of the  FMC module
+// CDUFrame represents the actual content of the  FMC module 
 //
 public class CDUFrame extends JFrame {
 
