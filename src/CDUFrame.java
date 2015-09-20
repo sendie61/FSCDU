@@ -21,6 +21,13 @@ import java.awt.Font;
 //
 public class CDUFrame extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
 	private JPanel contentPane;
 	private JLabel[] line; 
 	private boolean largeFont[]={true,false,true,false,true,false,true,false,true,false,true,false,true,true};
