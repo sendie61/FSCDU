@@ -43,7 +43,7 @@ public class UFMC_Client {
 	private JTextField nLeft;
 	private JTextField nHeight;
 	private JTextField nWidth;
-
+	private CDUSettings settings;
 	/**
 	 * Launch the application.
 	 */
@@ -70,10 +70,11 @@ public class UFMC_Client {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(){
+		settings = new CDUSettings();
 		frame = new JFrame();
 		frame.setResizable(false);
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(settings.CDULeft, settings.CDUTop, settings.CDUWidth, settings.CDUHeight);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
