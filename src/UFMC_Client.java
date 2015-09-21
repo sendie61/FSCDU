@@ -29,6 +29,8 @@ public class UFMC_Client {
 	private JTextField nHeight;
 	private JTextField nWidth;
 	private CDUSettings settings;
+	private JTextField IOCPServerIp;
+	private JTextField IOCPServerPort;
 	/**
 	 * Launch the application.
 	 */
@@ -135,6 +137,25 @@ public class UFMC_Client {
 
 		JPanel tabNetwork = new JPanel();
 		tabbedPane.addTab("Network", null, tabNetwork, null);
+		tabNetwork.setLayout(null);
+		
+		JLabel lblIocpServerIp = new JLabel("IOCP Server IP:");
+		lblIocpServerIp.setBounds(25, 28, 97, 14);
+		tabNetwork.add(lblIocpServerIp);
+		
+		JLabel lblIocpServerPort = new JLabel("IOCP Server Port:");
+		lblIocpServerPort.setBounds(25, 53, 97, 14);
+		tabNetwork.add(lblIocpServerPort);
+		
+		IOCPServerIp = new JTextField();
+		IOCPServerIp.setBounds(132, 25, 86, 20);
+		tabNetwork.add(IOCPServerIp);
+		IOCPServerIp.setColumns(10);
+		
+		IOCPServerPort = new JTextField();
+		IOCPServerPort.setBounds(132, 50, 43, 20);
+		tabNetwork.add(IOCPServerPort);
+		IOCPServerPort.setColumns(10);
 
 		Rectangle rect= new Rectangle();
 		rect.setBounds(settings.CDULeft, settings.CDUTop, settings.CDUWidth, settings.CDUHeight);
