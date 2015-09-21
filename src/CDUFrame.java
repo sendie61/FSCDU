@@ -29,16 +29,18 @@ public class CDUFrame extends JFrame {
 			true, false, true, false, true, false, true, true };
 	private Font largeFont;
 	private Font smallFont;
-
+	
 	/**
 	 * Create the frame.
 	 */
-	public CDUFrame(Rectangle rect) {
-		initialize(rect);
+	public CDUFrame(CDUSettings s) {
+		initialize(s);
 	}
 
-	private void initialize(Rectangle rect) {
+	private void initialize(CDUSettings sett) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Rectangle rect= new Rectangle();
+		rect.setBounds(sett.CDULeft, sett.CDUTop, sett.CDUWidth, sett.CDUHeight);
 		setBounds(rect);
 		setUndecorated(true); // No title bar nor border
 		contentPane = new JPanel();
@@ -76,7 +78,7 @@ public class CDUFrame extends JFrame {
 		JLabel lblEmptyLabel2 = new JLabel("");
 		contentPane.add(lblEmptyLabel2);
 	}
-
+	
 	public void redraw(Rectangle rect) {
 		int i = 0;
 		while (i < 14) {

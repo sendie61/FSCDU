@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JCheckBox;
 
 //import java.awt.*;
 //import javax.swing.*;
@@ -24,13 +25,14 @@ public class UFMC_Client {
 
 	private JFrame frame;
 	private CDUFrame CDUWindow;
+	private IOCPclient client;
 	private JTextField nTop;
 	private JTextField nLeft;
 	private JTextField nHeight;
 	private JTextField nWidth;
 	private CDUSettings settings;
-	private JTextField IOCPServerIp;
-	private JTextField IOCPServerPort;
+	private JTextField sIOCPServerIp;
+	private JTextField nIOCPServerPort;
 	/**
 	 * Launch the application.
 	 */
@@ -52,7 +54,9 @@ public class UFMC_Client {
 	 */
 	public UFMC_Client() {
 		initialize();
-	}
+		client = new IOCPclient();
+		client.connect(settings.IOCPServerIP, settings.IOCPServerPort);
+	} 
 
 	/**
 	 * Initialize the contents of the frame.
@@ -147,19 +151,26 @@ public class UFMC_Client {
 		lblIocpServerPort.setBounds(25, 53, 97, 14);
 		tabNetwork.add(lblIocpServerPort);
 		
-		IOCPServerIp = new JTextField();
-		IOCPServerIp.setBounds(132, 25, 86, 20);
-		tabNetwork.add(IOCPServerIp);
-		IOCPServerIp.setColumns(10);
+		sIOCPServerIp = new JTextField();
+		sIOCPServerIp.setText(settings.IOCPServerIP);
+		sIOCPServerIp.setBounds(132, 25, 86, 20);
+		tabNetwork.add(sIOCPServerIp);
+		sIOCPServerIp.setColumns(10);
 		
-		IOCPServerPort = new JTextField();
-		IOCPServerPort.setBounds(132, 50, 43, 20);
-		tabNetwork.add(IOCPServerPort);
-		IOCPServerPort.setColumns(10);
+		nIOCPServerPort = new JTextField();
+		nIOCPServerPort.setText(settings.IOCPServerPort.toString());
+		nIOCPServerPort.setBounds(132, 50, 43, 20);
+		tabNetwork.add(nIOCPServerPort);
+		nIOCPServerPort.setColumns(10);
+		
+		JCheckBox chckbxConnected = new JCheckBox("Connected to IOCP server");
+		chckbxConnected.setEnabled(false);
+		chckbxConnected.setBounds(25, 74, 163, 23);
+		tabNetwork.add(chckbxConnected);
 
 		Rectangle rect= new Rectangle();
 		rect.setBounds(settings.CDULeft, settings.CDUTop, settings.CDUWidth, settings.CDUHeight);
-		CDUWindow = new CDUFrame(rect );
+		CDUWindow = new CDUFrame(settings );
 		CDUWindow.setVisible(true);
 	}
 
@@ -168,6 +179,8 @@ public class UFMC_Client {
 		settings.CDULeft = Integer.parseInt(nLeft.getText());
 		settings.CDUHeight = Integer.parseInt(nHeight.getText());
 		settings.CDUWidth = Integer.parseInt(nWidth.getText());
+		settings.IOCPServerIP = sIOCPServerIp.getText();
+		settings.IOCPServerPort = Integer.parseInt(nIOCPServerPort.getText());
 
 		Rectangle rect= new Rectangle();
 		rect.setBounds(settings.CDULeft, settings.CDUTop, settings.CDUWidth, settings.CDUHeight);
