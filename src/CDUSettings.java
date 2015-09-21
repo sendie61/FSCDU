@@ -34,10 +34,10 @@ public class CDUSettings {
 	
 	@SuppressWarnings("deprecation")
 	public void writeInifile(){
-		p.put("CDUTop", CDUTop);
-		p.put("CDULeft", CDULeft);
-		p.put("CDUHeight", CDUHeight);
-		p.put("CDUWidth", CDUWidth);
+		p.put("CDUTop", CDUTop.toString());
+		p.put("CDULeft", CDULeft.toString());
+		p.put("CDUHeight", CDUHeight.toString());
+		p.put("CDUWidth", CDUWidth.toString());
 		try {
 		p.save(new FileOutputStream(Inifilename), "/* properties updated */");
 		} catch (Exception e) {
