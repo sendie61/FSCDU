@@ -4,19 +4,7 @@ import java.awt.Rectangle;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 
-import java.awt.BorderLayout;
-
 import javax.swing.SwingConstants;
-
-import java.awt.FlowLayout;
-
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.Box;
-import javax.swing.Spring;
-
-import java.awt.GridLayout;
 
 import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
@@ -24,9 +12,6 @@ import javax.swing.JLabel;
 
 import java.awt.Color;
 
-import javax.swing.JSpinner;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ChangeEvent;
 import javax.swing.JTextField;
 
 import java.awt.event.ActionListener;
@@ -74,14 +59,14 @@ public class UFMC_Client {
 		settings = new CDUSettings();
 		frame = new JFrame();
 		frame.setResizable(false);
-		frame.setBounds(settings.CDULeft, settings.CDUTop, settings.CDUWidth, settings.CDUHeight);
+		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
 		JButton btnApply = new JButton("Apply");
 		btnApply.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				drawCDU();
+				apply();
 			}
 		});
 		btnApply.setBounds(182, 237, 89, 23);
@@ -125,25 +110,25 @@ public class UFMC_Client {
 		tabPos.add(lblWidth);
 
 		nTop = new JTextField();
-		nTop.setText("25");
+		nTop.setText(settings.CDUTop.toString());
 		nTop.setBounds(146, 8, 46, 20);
 		tabPos.add(nTop);
 		nTop.setColumns(10);
 
 		nLeft = new JTextField();
-		nLeft.setText("25");
+		nLeft.setText(settings.CDULeft.toString());
 		nLeft.setColumns(10);
 		nLeft.setBounds(146, 33, 46, 20);
 		tabPos.add(nLeft);
 
 		nHeight = new JTextField();
-		nHeight.setText("300");
+		nHeight.setText(settings.CDUHeight.toString());
 		nHeight.setColumns(10);
 		nHeight.setBounds(288, 8, 46, 20);
 		tabPos.add(nHeight);
 
 		nWidth = new JTextField();
-		nWidth.setText("400");
+		nWidth.setText(settings.CDUWidth.toString());
 		nWidth.setColumns(10);
 		nWidth.setBounds(288, 33, 46, 20);
 		tabPos.add(nWidth);
@@ -151,18 +136,21 @@ public class UFMC_Client {
 		JPanel tabNetwork = new JPanel();
 		tabbedPane.addTab("Network", null, tabNetwork, null);
 
-		CDUWindow = new CDUFrame();
+		Rectangle rect= new Rectangle();
+		rect.setBounds(settings.CDULeft, settings.CDUTop, settings.CDUWidth, settings.CDUHeight);
+		CDUWindow = new CDUFrame(rect );
 		CDUWindow.setVisible(true);
 	}
 
-	private void drawCDU() {
-		int top = Integer.parseInt(nTop.getText());
-		int left = Integer.parseInt(nLeft.getText());
-		int height = Integer.parseInt(nHeight.getText());
-		int width = Integer.parseInt(nWidth.getText());
+	private void apply() {
+		settings.CDUTop = Integer.parseInt(nTop.getText());
+		settings.CDULeft = Integer.parseInt(nLeft.getText());
+		settings.CDUHeight = Integer.parseInt(nHeight.getText());
+		settings.CDUWidth = Integer.parseInt(nWidth.getText());
 
 		Rectangle rect= new Rectangle();
-		rect.setBounds(left, top, width, height);
+		rect.setBounds(settings.CDULeft, settings.CDUTop, settings.CDUWidth, settings.CDUHeight);
 		CDUWindow.redraw(rect);
+		settings.writeInifile();
 	}
 }
