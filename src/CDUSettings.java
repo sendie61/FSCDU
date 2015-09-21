@@ -3,10 +3,14 @@ import java.io.FileOutputStream;
 import java.util.Properties;
 
 public class CDUSettings {
+	
 	public Integer CDUTop;
 	public Integer CDULeft;
 	public Integer CDUHeight;
 	public Integer CDUWidth;
+	public String  IOCPServerIP;
+	public Integer IOCPServerPort;
+	
 	private Properties p;
 	private String Inifilename= "src\\FSCDU.ini";
  
