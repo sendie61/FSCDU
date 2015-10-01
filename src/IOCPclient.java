@@ -20,7 +20,7 @@ public class IOCPclient {
 			ex.printStackTrace();
 		}
 		try {
-			out.write("Hello World!");
+			out.write("Hello World!\n");
 			out.flush();
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -33,15 +33,6 @@ public class IOCPclient {
 
 	// Cleanup for disconnect
 	private void cleanUp() {
-		try {
-			if (socket != null) {
-				socket.close();
-				socket = null;
-			}
-		} catch (IOException e) {
-			socket = null;
-		}
-
 		try {
 			if (socket != null) {
 				socket.close();
