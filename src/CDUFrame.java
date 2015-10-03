@@ -25,13 +25,15 @@ public class CDUFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JLabel[] line;
+	
+	// Which lines are small and which are in a large Font?
 	private boolean isLargeFont[] = { true, false, true, false, true, false,
 			true, false, true, false, true, false, true, true };
 	private Font largeFont;
 	private Font smallFont;
 	
 	/**
-	 * Create the frame.
+	 * Create the frame. (Constructor)
 	 */
 	public CDUFrame(Rectangle position) {
 		initialize(position);
