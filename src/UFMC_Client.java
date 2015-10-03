@@ -3,9 +3,7 @@ import java.awt.Rectangle;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
-
 import javax.swing.SwingConstants;
-
 import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -16,12 +14,29 @@ import javax.swing.JTextField;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+
 import javax.swing.JCheckBox;
 
 //import java.awt.*;
 //import javax.swing.*;
 
 public class UFMC_Client {
+	// Connect status constants
+	public final static int NULL = 0;
+	public final static int DISCONNECTED = 1;
+	public final static int DISCONNECTING = 2;
+	public final static int BEGIN_CONNECT = 3;
+	public final static int CONNECTED = 4;
+
+	// Other constants
+	public final static String statusMessages[] = { " Error! Could not connect!", " Disconnected", " Disconnecting...",
+			" Connecting...", " Connected" };
 
 	private JFrame frame;
 	private CDUFrame CDUWindow;
@@ -33,10 +48,13 @@ public class UFMC_Client {
 	private CDUSettings settings;
 	private JTextField sIOCPServerIp;
 	private JTextField nIOCPServerPort;
+
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+
+		// This is all GUI stuff thread
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -47,7 +65,86 @@ public class UFMC_Client {
 				}
 			}
 		});
-	}
+
+		// Here is our Networking thread (main thread)
+/*		while (true) {
+			try { // Poll every ~10 ms
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+			}
+
+			switch (connectionStatus) {
+			case BEGIN_CONNECT:
+				try {
+					// Try to set up a server if host
+					if (isHost) {
+						hostServer = new ServerSocket(port);
+						socket = hostServer.accept();
+					}
+
+					// If guest, try to connect to the server
+					else {
+						socket = new Socket(hostIP, port);
+					}
+
+					in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+					out = new PrintWriter(socket.getOutputStream(), true);
+					changeStatusTS(CONNECTED, true);
+				}
+				// If error, clean up and output an error message
+				catch (IOException e) {
+					cleanUp();
+					changeStatusTS(DISCONNECTED, false);
+				}
+				break;
+
+			case CONNECTED:
+				try {
+					// Send data
+					if (toSend.length() != 0) {
+						out.print(toSend);
+						out.flush();
+						toSend.setLength(0);
+						changeStatusTS(NULL, true);
+					}
+
+					// Receive data
+					if (in.ready()) {
+						s = in.readLine();
+						if ((s != null) && (s.length() != 0)) {
+							// Check if it is the end of a trasmission
+							if (s.equals(END_CHAT_SESSION)) {
+								changeStatusTS(DISCONNECTING, true);
+							}
+
+							// Otherwise, receive what text
+							else {
+								appendToChatBox("INCOMING: " + s + "\n");
+								changeStatusTS(NULL, true);
+							}
+						}
+					}
+				} catch (IOException e) {
+					cleanUp();
+					changeStatusTS(DISCONNECTED, false);
+				}
+				break;
+
+			case DISCONNECTING:
+				// Tell other chatter to disconnect as well
+				out.print(END_CHAT_SESSION);
+				out.flush();
+
+				// Clean up (close all streams/sockets)
+				cleanUp();
+				changeStatusTS(DISCONNECTED, true);
+				break;
+
+			default:
+				break; // do nothing
+			}
+		}
+*/	}
 
 	/**
 	 * Create the application.
@@ -56,12 +153,12 @@ public class UFMC_Client {
 		initialize();
 		client = new IOCPclient();
 		client.connect(settings.IOCPServerIP, settings.IOCPServerPort);
-	} 
+	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(){
+	private void initialize() {
 		settings = new CDUSettings();
 		frame = new JFrame();
 		frame.setResizable(false);
@@ -142,35 +239,35 @@ public class UFMC_Client {
 		JPanel tabNetwork = new JPanel();
 		tabbedPane.addTab("Network", null, tabNetwork, null);
 		tabNetwork.setLayout(null);
-		
+
 		JLabel lblIocpServerIp = new JLabel("IOCP Server IP:");
 		lblIocpServerIp.setBounds(25, 28, 97, 14);
 		tabNetwork.add(lblIocpServerIp);
-		
+
 		JLabel lblIocpServerPort = new JLabel("IOCP Server Port:");
 		lblIocpServerPort.setBounds(25, 53, 97, 14);
 		tabNetwork.add(lblIocpServerPort);
-		
+
 		sIOCPServerIp = new JTextField();
 		sIOCPServerIp.setText(settings.IOCPServerIP);
 		sIOCPServerIp.setBounds(132, 25, 86, 20);
 		tabNetwork.add(sIOCPServerIp);
 		sIOCPServerIp.setColumns(10);
-		
+
 		nIOCPServerPort = new JTextField();
 		nIOCPServerPort.setText(settings.IOCPServerPort.toString());
 		nIOCPServerPort.setBounds(132, 50, 43, 20);
 		tabNetwork.add(nIOCPServerPort);
 		nIOCPServerPort.setColumns(10);
-		
+
 		JCheckBox chckbxConnected = new JCheckBox("Connected to IOCP server");
 		chckbxConnected.setEnabled(false);
 		chckbxConnected.setBounds(25, 74, 163, 23);
 		tabNetwork.add(chckbxConnected);
 
-		Rectangle rect= new Rectangle();
+		Rectangle rect = new Rectangle();
 		rect.setBounds(settings.CDULeft, settings.CDUTop, settings.CDUWidth, settings.CDUHeight);
-		CDUWindow = new CDUFrame(settings );
+		CDUWindow = new CDUFrame(rect);
 		CDUWindow.setVisible(true);
 	}
 
@@ -182,7 +279,7 @@ public class UFMC_Client {
 		settings.IOCPServerIP = sIOCPServerIp.getText();
 		settings.IOCPServerPort = Integer.parseInt(nIOCPServerPort.getText());
 
-		Rectangle rect= new Rectangle();
+		Rectangle rect = new Rectangle();
 		rect.setBounds(settings.CDULeft, settings.CDUTop, settings.CDUWidth, settings.CDUHeight);
 		CDUWindow.redraw(rect);
 		settings.writeInifile();

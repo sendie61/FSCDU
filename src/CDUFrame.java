@@ -33,15 +33,13 @@ public class CDUFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public CDUFrame(CDUSettings s) {
-		initialize(s);
+	public CDUFrame(Rectangle position) {
+		initialize(position);
 	}
 
-	private void initialize(CDUSettings sett) {
+	private void initialize(Rectangle position) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Rectangle rect= new Rectangle();
-		rect.setBounds(sett.CDULeft, sett.CDUTop, sett.CDUWidth, sett.CDUHeight);
-		setBounds(rect);
+		setBounds(position);
 		setUndecorated(true); // No title bar nor border
 		contentPane = new JPanel();
 		contentPane.setForeground(new Color(50, 205, 50));
@@ -67,9 +65,9 @@ public class CDUFrame extends JFrame {
 			line[i] = new JLabel("0123456789012345678901234");
 			line[i].setHorizontalAlignment(SwingConstants.CENTER);
 			if (isLargeFont[i]) {
-				line[i].setFont(largeFont.deriveFont(rect.width / 16f));
+				line[i].setFont(largeFont.deriveFont(position.width / 16f));
 			} else {
-				line[i].setFont(smallFont.deriveFont(rect.width / 16f));
+				line[i].setFont(smallFont.deriveFont(position.width / 16f));
 			}
 			line[i].setForeground(new Color(0, 204, 0));
 			contentPane.add(line[i]);
