@@ -13,10 +13,10 @@ public class IOCPclient implements Runnable {
 	public final static int BEGIN_CONNECT = 3;
 	public final static int CONNECTED = 4;
 	// Other constants
-	public final static String statusMessages[] = { " Error! Could not connect!", " Disconnected", " Disconnecting...",
-			" Connecting...", " Connected" };
+//	public final static String statusMessages[] = { " Error! Could not connect!", " Disconnected", " Disconnecting...",
+//			" Connecting...", " Connected" };
 	public static int connectionStatus = DISCONNECTED;
-	public static String statusString = statusMessages[connectionStatus];
+//	public static String statusString = statusMessages[connectionStatus];
 	// stuff for connection to IOCP server
 	private Socket socket;
 	private String ip;
