@@ -1,10 +1,10 @@
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.Socket;
 
-public class IOCPclient implements  Runnable {
-
+public class IOCPclient implements Runnable {
 
 	// Connect status constants
 	public final static int NULL = 0;
@@ -17,40 +17,80 @@ public class IOCPclient implements  Runnable {
 			" Connecting...", " Connected" };
 	public static int connectionStatus = DISCONNECTED;
 	public static String statusString = statusMessages[connectionStatus];
-	// socket for connection to IOCP server
+	// stuff for connection to IOCP server
 	private Socket socket;
+	private String ip;
+	private Integer port;
+
 	// for writing to and reading from the server
-	private OutputStreamWriter out;
-	private InputStreamReader in;
-	
+	private PrintWriter out;
+	private BufferedReader in;
+
 	public void run() {
-		
+		while (true) {
+			sleep(10);
+
+			switch (connectionStatus) {
+			case BEGIN_CONNECT:
+				tryConnect(ip, port);
+				break;
+			case CONNECTED:
+				readMessage();
+				sendMessage("HELLO!!");
+				break;
+			case DISCONNECTING:
+				cleanUp();
+				connectionStatus = DISCONNECTED;
+				break;
+			case DISCONNECTED:
+				sleep(1000);
+				connectionStatus = BEGIN_CONNECT;
+				break;
+			default:
+				break; // do nothing
+			}
+		}
+	}
+
+	/**
+	 * sleep
+	 */
+	public void sleep(int milliseconds) {
+		try {
+			Thread.sleep(milliseconds);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} // wait milliseconds
 	}
 
 	/**
 	 * Connect to server on IP:Port
 	 */
-	public void connect(String ip, Integer port) {
-		tryConnect(ip, port);
+	public void connect(String newIp, Integer newPort) {
+		ip = newIp;
+		port = newPort;
+		connectionStatus = BEGIN_CONNECT;
 	}
 
 	/**
 	 * Disconnect the connection to the server
 	 */
 	public void disconnect() {
-		cleanUp();
+		connectionStatus = DISCONNECTING;
 	}
 
 	/**
 	 * Disconnect the connection to the server
 	 */
-	public void sendMessage() {
+	public void sendMessage( String message) {
 		if (connectionStatus == CONNECTED) {
 			try {
-				out.write("Hello World!\n");
+				out.write(message+"\n");
 				out.flush();
-			} catch (IOException ex) {
-				System.out.println("General I/O exception: " + ex.getMessage());
+				if (out.checkError())
+					disconnect();
+			} catch (Exception ex) {
+				System.out.println("General ?? exception: " + ex.getMessage());
 				disconnect();
 			}
 		}
@@ -60,31 +100,34 @@ public class IOCPclient implements  Runnable {
 	 * Read data from server the server
 	 */
 	public String readMessage() {
+		String s = "";
 		// Receive data
-		return "";
+		try {
+			if (in.ready()) {
+				s = in.readLine();
+			}
+		} catch (IOException e) {
+			System.out.println("readMessage exception: " + e.getMessage());
+		}
+		return s;
 	}
 
 	private void tryConnect(String ip, Integer port) {
 		// connect to IOCP server
 		try {
 			socket = new Socket(ip, port);
-	//		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-	//		out = new PrintWriter(socket.getOutputStream(), true);
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			out = new PrintWriter(socket.getOutputStream(), true);
 			// changeStatusTS(CONNECTED, true);
-
+			connectionStatus = CONNECTED;
 		} catch (IOException ex) {
 			System.out.println("General I/O exception: " + ex.getMessage());
-			ex.printStackTrace();
 			disconnect();
 		} catch (Exception ex) {
+			System.out.println("tryConnect exception: " + ex.getMessage());
 			ex.printStackTrace();
 		}
-		try {
-			out.write("Hello World!\n");
-			out.flush();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+
 	}
 
 	// Cleanup for disconnect
@@ -112,7 +155,7 @@ public class IOCPclient implements  Runnable {
 				out.close();
 				out = null;
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			in = null;
 		}
 

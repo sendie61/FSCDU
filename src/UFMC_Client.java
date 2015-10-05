@@ -21,11 +21,11 @@ import javax.swing.JCheckBox;
 //import javax.swing.*;
 
 public class UFMC_Client {
-	   
+
 	private CDUFrame CDUWindow;
-	private IOCPclient clientIOCP;
+	private static IOCPclient clientIOCP;
 	private CDUSettings settings;
-	
+
 	private JFrame frame;
 	private JTextField nTop;
 	private JTextField nLeft;
@@ -34,11 +34,11 @@ public class UFMC_Client {
 	private JTextField sIOCPServerIp;
 	private JTextField nIOCPServerPort;
 	private JCheckBox chckbxConnected;
-	
 
 	/**
 	 * Launch the application.
-	 * @throws InterruptedException 
+	 * 
+	 * @throws InterruptedException
 	 */
 	public static void main(String[] args) throws InterruptedException {
 
@@ -53,16 +53,16 @@ public class UFMC_Client {
 				}
 			}
 		});
-		
+
+		Thread.sleep(1000); // Give other thread the time to start up.
 		// This starts up the TCP thread
-		Thread iocpThread = new Thread();
+		Thread iocpThread = new Thread(clientIOCP);
 		iocpThread.start();
-	
 		iocpThread.join();
 	}
 
 	/**
-	 * Create the application. (Contructor)
+	 * Create the application. (Constructor)
 	 */
 	public UFMC_Client() {
 		initialize();
@@ -202,5 +202,5 @@ public class UFMC_Client {
 		CDUWindow.redraw(rect);
 		settings.writeInifile();
 	}
-	
+
 }
