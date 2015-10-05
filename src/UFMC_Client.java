@@ -54,7 +54,7 @@ public class UFMC_Client {
 			}
 		});
 
-		Thread.sleep(1000); // Give other thread the time to start up.
+		Thread.sleep(2000); // Give other thread the time to start up.
 		// This starts up the TCP thread
 		Thread iocpThread = new Thread(clientIOCP);
 		iocpThread.start();

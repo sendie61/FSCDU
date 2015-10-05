@@ -32,7 +32,7 @@ public class IOCPclient implements Runnable {
 			case BEGIN_CONNECT:
 				tryConnect(ip, port);
 				connectionStatus = INITIATING;
-				sendMessage("Arn.Vivo:");
+				sendMessage("Arn.Vivo:\r");
 				break;
 			case INITIATING:
 				sendMessage("Arn.Inicio:1:2:3:4:5:");
@@ -89,7 +89,7 @@ public class IOCPclient implements Runnable {
 	public void sendMessage( String message) {
 		if ((connectionStatus == CONNECTED)||(connectionStatus == INITIATING)) {
 			try {
-				out.write(message+"\n\n");
+				out.write(message+"\n");
 				out.flush();
 				if (out.checkError())
 					disconnect();
@@ -109,11 +109,11 @@ public class IOCPclient implements Runnable {
 		try {
 			if (in.ready()) {
 				s = in.readLine();
-				System.out.println(s);
+				System.out.println("->"+s);
 				if (s.contentEquals("Arn.Fin:"))
 					disconnect();
 				if (s.contentEquals("Arn.Vivo:"))
-					sendMessage("Arn.Vivo:");
+					sendMessage("Arn.Vivo:\r");
 			}
 		} catch (IOException e) {
 			System.out.println("readMessage exception: " + e.getMessage());
