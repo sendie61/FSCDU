@@ -11,12 +11,10 @@ public class IOCPclient implements Runnable {
 	public final static int DISCONNECTED = 1;
 	public final static int DISCONNECTING = 2;
 	public final static int BEGIN_CONNECT = 3;
-	public final static int CONNECTED = 4;
+	public final static int INITIATING = 4;
+	public final static int CONNECTED = 5;
 	// Other constants
-//	public final static String statusMessages[] = { " Error! Could not connect!", " Disconnected", " Disconnecting...",
-//			" Connecting...", " Connected" };
 	public static int connectionStatus = DISCONNECTED;
-//	public static String statusString = statusMessages[connectionStatus];
 	// stuff for connection to IOCP server
 	private Socket socket;
 	private String ip;
@@ -33,10 +31,16 @@ public class IOCPclient implements Runnable {
 			switch (connectionStatus) {
 			case BEGIN_CONNECT:
 				tryConnect(ip, port);
+				connectionStatus = INITIATING;
+				sendMessage("Arn.Vivo:");
+				break;
+			case INITIATING:
+				sendMessage("Arn.Inicio:1:2:3:4:5:");
+				connectionStatus = CONNECTED;
 				break;
 			case CONNECTED:
 				readMessage();
-				sendMessage("HELLO!!");
+				// update CDUFrame here
 				break;
 			case DISCONNECTING:
 				cleanUp();
@@ -83,9 +87,9 @@ public class IOCPclient implements Runnable {
 	 * Disconnect the connection to the server
 	 */
 	public void sendMessage( String message) {
-		if (connectionStatus == CONNECTED) {
+		if ((connectionStatus == CONNECTED)||(connectionStatus == INITIATING)) {
 			try {
-				out.write(message+"\n");
+				out.write(message+"\n\n");
 				out.flush();
 				if (out.checkError())
 					disconnect();
@@ -105,6 +109,11 @@ public class IOCPclient implements Runnable {
 		try {
 			if (in.ready()) {
 				s = in.readLine();
+				System.out.println(s);
+				if (s.contentEquals("Arn.Fin:"))
+					disconnect();
+				if (s.contentEquals("Arn.Vivo:"))
+					sendMessage("Arn.Vivo:");
 			}
 		} catch (IOException e) {
 			System.out.println("readMessage exception: " + e.getMessage());
@@ -118,8 +127,6 @@ public class IOCPclient implements Runnable {
 			socket = new Socket(ip, port);
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			out = new PrintWriter(socket.getOutputStream(), true);
-			// changeStatusTS(CONNECTED, true);
-			connectionStatus = CONNECTED;
 		} catch (IOException ex) {
 			System.out.println("General I/O exception: " + ex.getMessage());
 			disconnect();

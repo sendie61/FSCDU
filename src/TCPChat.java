@@ -23,7 +23,7 @@ public class TCPChat implements Runnable {
 
    // Connection atate info
    public static String hostIP = "localhost";
-   public static int port = 1234;
+   public static int port = 8092;
    public static int connectionStatus = DISCONNECTED;
    public static boolean isHost = true;
    public static String statusString = statusMessages[connectionStatus];
