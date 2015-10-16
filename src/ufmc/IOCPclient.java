@@ -1,3 +1,4 @@
+package ufmc;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -89,6 +90,7 @@ public class IOCPclient implements Runnable {
 	public void sendMessage( String message) {
 		if ((connectionStatus == CONNECTED)||(connectionStatus == INITIATING)) {
 			try {
+				System.out.println("< "+message);
 				out.write(message+"\n");
 				out.flush();
 				if (out.checkError())
@@ -109,7 +111,7 @@ public class IOCPclient implements Runnable {
 		try {
 			if (in.ready()) {
 				s = in.readLine();
-				System.out.println("->"+s);
+				System.out.println("> "+s);
 				if (s.contentEquals("Arn.Fin:"))
 					disconnect();
 				if (s.contentEquals("Arn.Vivo:"))
