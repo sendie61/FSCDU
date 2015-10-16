@@ -75,7 +75,7 @@ public class UFMC_Client {
 	 * Initialize the contents of the main window.
 	 */
 	private void initialize() {
-		settings = new CDUSettings();
+		settings = new CDUSettings("src/FSCDU.ini");
 		frame = new JFrame();
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 450, 300);

@@ -20,7 +20,7 @@ public class CDUSettings {
 	private Properties properties;
 	private String iniFileName = "";
 	
-	String defaultFileName = "src/FSCDU.ini"; //default iniFileName
+	String defaultFileName = "default.ini"; //default iniFileName
 
 	/* 
 	 * default constructor 
