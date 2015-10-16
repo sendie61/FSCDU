@@ -14,8 +14,16 @@ public class CDUSettingsTest {
 	public void testGetIniFileName() {
 		CDUSettings ini = new CDUSettings();
 		String result= ini.getIniFileName();
-		// should return default iniName "src\\FSCDU.ini"
-		assertEquals("iniFileName NOIT equal", "src\\FSCDU.ini", result);
+		// should return default iniName "src/FSCDU.ini"
+		assertEquals("iniFileName NOT src/FSCDU.ini", "src/FSCDU.ini", result);
+	}
+	
+	@Test
+	public void testGetIniFileName2() {
+		CDUSettings ini = new CDUSettings("abc.def");
+		String result= ini.getIniFileName();
+		// should return default iniName "src/FSCDU.ini"
+		assertEquals("iniFileName NOT 'abc.def'", "abc.def", result);
 	}
 	
 	@Test
@@ -24,7 +32,7 @@ public class CDUSettingsTest {
 		String name1= "Filename1.ini";
 		ini.setIniFileName(name1);
 		String result= ini.getIniFileName();
-		assertEquals("iniFileName NOIT equal", name1, result);
+		assertEquals("iniFileName NOT equal", name1, result);
 	}
 	
 	@Test
