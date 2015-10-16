@@ -12,11 +12,11 @@ public class CDUSettings {
 	public String IOCPServerIP;
 	public Integer IOCPServerPort;
 
-	private Properties p;
-	private String Inifilename = "src\\FSCDU.ini";
+	private Properties properties;
+	private String iniFileName = "src\\FSCDU.ini"; //default iniFileName
 
 	public CDUSettings() {
-		p = new Properties();
+		properties = new Properties();
 		try {
 			readInifile();
 		} catch (Exception e) {
@@ -26,27 +26,35 @@ public class CDUSettings {
 
 	public void readInifile() {
 		try {
-			p.load(new FileInputStream(Inifilename));
-			CDUTop = Integer.parseInt(p.getProperty("CDUTop"));
-			CDULeft = Integer.parseInt(p.getProperty("CDULeft"));
-			CDUHeight = Integer.parseInt(p.getProperty("CDUHeight"));
-			CDUWidth = Integer.parseInt(p.getProperty("CDUWidth"));
-			IOCPServerIP = p.getProperty("IOCPServerIP");
-			IOCPServerPort = Integer.parseInt(p.getProperty("IOCPServerPort"));
+			properties.load(new FileInputStream(iniFileName));
+			CDUTop = Integer.parseInt(properties.getProperty("CDUTop"));
+			CDULeft = Integer.parseInt(properties.getProperty("CDULeft"));
+			CDUHeight = Integer.parseInt(properties.getProperty("CDUHeight"));
+			CDUWidth = Integer.parseInt(properties.getProperty("CDUWidth"));
+			IOCPServerIP = properties.getProperty("IOCPServerIP");
+			IOCPServerPort = Integer.parseInt(properties.getProperty("IOCPServerPort"));
 		} catch (Exception e) {
 			System.out.println(e);
 		}
 	}
 
+	public String getIniFileName() {
+		return iniFileName;
+	}
+
+	public void setIniFileName(String iniFileName) {
+		this.iniFileName = iniFileName;
+	}
+
 	public void writeInifile() {
-		p.put("CDUTop", CDUTop.toString());
-		p.put("CDULeft", CDULeft.toString());
-		p.put("CDUHeight", CDUHeight.toString());
-		p.put("CDUWidth", CDUWidth.toString());
-		p.put("IOCPServerIP", IOCPServerIP);
-		p.put("IOCPServerPort", IOCPServerPort.toString());
+		properties.put("CDUTop", CDUTop.toString());
+		properties.put("CDULeft", CDULeft.toString());
+		properties.put("CDUHeight", CDUHeight.toString());
+		properties.put("CDUWidth", CDUWidth.toString());
+		properties.put("IOCPServerIP", IOCPServerIP);
+		properties.put("IOCPServerPort", IOCPServerPort.toString());
 		try {
-			p.store(new FileOutputStream(Inifilename), "/* properties updated */");
+			properties.store(new FileOutputStream(iniFileName), "/* properties updated */");
 		} catch (Exception e) {
 			System.out.println(e);
 		}
