@@ -74,4 +74,15 @@ public class CDUSettingsTest {
 		assertEquals( "localhost", ini.IOCPServerIP);	
 	}
 
+	@Test
+	// write/create the test inifile 'test.ini'
+	public void testWriteInifile() {
+		String newFileName = "writetest.ini";
+		CDUSettings ini = new CDUSettings(newFileName);
+		File file = new File(newFileName);
+		assertTrue("File '" + newFileName + "' not created.", file.isFile());
+		file.delete();
+		
+	}
+
 }

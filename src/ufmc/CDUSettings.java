@@ -75,7 +75,9 @@ public class CDUSettings {
 			writeInifile();
 		}
 		try {
-			properties.load(new FileInputStream(iniFileName));
+			FileInputStream is= new FileInputStream(iniFileName);
+			properties.load(is);
+			is.close();
 			CDUTop = Integer.parseInt(properties.getProperty("CDUTop"));
 			CDULeft = Integer.parseInt(properties.getProperty("CDULeft"));
 			CDUHeight = Integer.parseInt(properties.getProperty("CDUHeight"));
@@ -98,7 +100,9 @@ public class CDUSettings {
 		properties.put("IOCPServerIP", IOCPServerIP);
 		properties.put("IOCPServerPort", IOCPServerPort.toString());
 		try {
-			properties.store(new FileOutputStream(iniFileName), "/* properties updated */");
+			FileOutputStream os= new FileOutputStream(iniFileName);
+			properties.store(os, "/* properties updated */");
+			os.close();
 		} catch (Exception e) {
 			System.out.println(e);
 		}
