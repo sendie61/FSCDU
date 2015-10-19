@@ -54,8 +54,8 @@ public class CDUFrame extends JFrame {
 		JLabel lblEmptyLabel = new JLabel("");
 		contentPane.add(lblEmptyLabel);
 
-		File large_font_file = new File("src\\AEROWINXFMCLARGE.TTF");
-		File small_font_file = new File("src\\AEROWINXFMCSMALL.TTF");
+		File large_font_file = new File("src/AEROWINXFMCLARGE.TTF");
+		File small_font_file = new File("src/AEROWINXFMCSMALL.TTF");
 		try {
 			largeFont = Font.createFont(Font.TRUETYPE_FONT, large_font_file);
 			smallFont = Font.createFont(Font.TRUETYPE_FONT, small_font_file);
