@@ -153,7 +153,13 @@ public class IOCPclient implements Runnable {
 				lineNr=0;
 			}
 			if (lineNr>0 && lineNr<15){
-				textFrame.line[lineNr-1].setText(" " + property[1]);
+				if (property.length==1){
+					textFrame.line[lineNr-1].setText("                          ");
+				}
+				else{
+					textFrame.line[lineNr-1].setText(" " + property[1]);
+					
+				}
 			}	
 		}
 	}
