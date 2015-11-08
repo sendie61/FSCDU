@@ -28,6 +28,8 @@ public class IOCPclient implements Runnable {
 	private PrintWriter out;
 	private BufferedReader in;
 
+	private int firstLineRef= 377;
+	
 	public void run() {
 		while (true) {
 			sleep(10);
@@ -39,7 +41,11 @@ public class IOCPclient implements Runnable {
 				sendMessage("Arn.Vivo:\r");
 				break;
 			case INITIATING:
-				sendMessage("Arn.Inicio:1:2:3:4:5:6:7:8:9:10:11:12:13:14:");
+				String IniString= "Arn.Inicio:";
+				for (int i=firstLineRef; i<firstLineRef+14; i++){
+					IniString+= i+":";
+				}
+				sendMessage(IniString);
 				connectionStatus = CONNECTED;
 				break;
 			case CONNECTED:
@@ -152,12 +158,12 @@ public class IOCPclient implements Runnable {
 			catch (NumberFormatException e){
 				lineNr=0;
 			}
-			if (lineNr>0 && lineNr<15){
+			if (lineNr>=firstLineRef && lineNr<=(firstLineRef+14)){
 				if (property.length==1){
-					textFrame.line[lineNr-1].setText("                          ");
+					textFrame.line[lineNr-firstLineRef].setText("                          ");
 				}
 				else{
-					textFrame.line[lineNr-1].setText(" " + property[1]);
+					textFrame.line[lineNr-firstLineRef].setText(" " + property[1]);
 					
 				}
 			}	
