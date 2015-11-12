@@ -1,3 +1,5 @@
+package ufmc;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,10 +22,14 @@ public class IOCPclient implements Runnable {
 	private String ip;
 	private Integer port;
 
+	private CDUFrame textFrame;
+
 	// for writing to and reading from the server
 	private PrintWriter out;
 	private BufferedReader in;
 
+	private int firstLineRef= 377;
+	
 	public void run() {
 		while (true) {
 			sleep(10);
@@ -35,7 +41,11 @@ public class IOCPclient implements Runnable {
 				sendMessage("Arn.Vivo:\r");
 				break;
 			case INITIATING:
-				sendMessage("Arn.Inicio:1:2:3:4:5:");
+				String IniString= "Arn.Inicio:";
+				for (int i=firstLineRef; i<firstLineRef+14; i++){
+					IniString+= i+":";
+				}
+				sendMessage(IniString);
 				connectionStatus = CONNECTED;
 				break;
 			case CONNECTED:
@@ -77,6 +87,13 @@ public class IOCPclient implements Runnable {
 	}
 
 	/**
+	 * window to write results in
+	 */
+	public void textFrame(CDUFrame frame) {
+		textFrame = frame;
+	}
+
+	/**
 	 * Disconnect the connection to the server
 	 */
 	public void disconnect() {
@@ -86,10 +103,11 @@ public class IOCPclient implements Runnable {
 	/**
 	 * Disconnect the connection to the server
 	 */
-	public void sendMessage( String message) {
-		if ((connectionStatus == CONNECTED)||(connectionStatus == INITIATING)) {
+	public void sendMessage(String message) {
+		if ((connectionStatus == CONNECTED) || (connectionStatus == INITIATING)) {
 			try {
-				out.write(message+"\n");
+				System.out.println("< " + message);
+				out.write(message + "\n");
 				out.flush();
 				if (out.checkError())
 					disconnect();
@@ -109,11 +127,14 @@ public class IOCPclient implements Runnable {
 		try {
 			if (in.ready()) {
 				s = in.readLine();
-				System.out.println("->"+s);
+				System.out.println("> " + s);
+				// textFrame.line[1].setText(s);
 				if (s.contentEquals("Arn.Fin:"))
 					disconnect();
 				if (s.contentEquals("Arn.Vivo:"))
 					sendMessage("Arn.Vivo:\r");
+				if (s.contains("Arn.Resp"))
+					printMessage(s);
 			}
 		} catch (IOException e) {
 			System.out.println("readMessage exception: " + e.getMessage());
@@ -121,11 +142,40 @@ public class IOCPclient implements Runnable {
 		return s;
 	}
 
+	/**
+	 * Print data from FMC on screen. 
+	 * Data is in format: "Arn.Resp:140="ABCD
+	 * EFG":141="NEXT LINE":"
+	 */
+	private void printMessage(String message) {
+		String[] lines= message.split("\\:");
+		for (String line : lines){
+			String[] property= line.split("\\=");
+			int lineNr=0;
+			try{
+				lineNr = Integer.parseInt(property[0]);
+			}
+			catch (NumberFormatException e){
+				lineNr=0;
+			}
+			if (lineNr>=firstLineRef && lineNr<=(firstLineRef+14)){
+				if (property.length==1){
+					textFrame.line[lineNr-firstLineRef].setText("                          ");
+				}
+				else{
+					textFrame.line[lineNr-firstLineRef].setText(" " + property[1]);
+					
+				}
+			}	
+		}
+	}
+
 	private void tryConnect(String ip, Integer port) {
 		// connect to IOCP server
 		try {
 			socket = new Socket(ip, port);
-			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			in = new BufferedReader(new InputStreamReader(
+					socket.getInputStream()));
 			out = new PrintWriter(socket.getOutputStream(), true);
 		} catch (IOException ex) {
 			System.out.println("General I/O exception: " + ex.getMessage());

@@ -1,3 +1,4 @@
+package ufmc;
 import java.awt.EventQueue;
 import java.awt.Rectangle;
 
@@ -17,14 +18,16 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JCheckBox;
 
+
 //import java.awt.*;
 //import javax.swing.*;
 
 public class UFMC_Client {
 
-	private CDUFrame CDUWindow;
 	private static IOCPclient clientIOCP;
 	private CDUSettings settings;
+
+	static public CDUFrame CDUWindow;
 
 	private JFrame frame;
 	private JTextField nTop;
@@ -67,6 +70,7 @@ public class UFMC_Client {
 	public UFMC_Client() {
 		initialize();
 		clientIOCP = new IOCPclient();
+		clientIOCP.textFrame( CDUWindow);
 		clientIOCP.connect(settings.IOCPServerIP, settings.IOCPServerPort);
 	}
 
@@ -74,7 +78,7 @@ public class UFMC_Client {
 	 * Initialize the contents of the main window.
 	 */
 	private void initialize() {
-		settings = new CDUSettings();
+		settings = new CDUSettings("FSCDU.ini");
 		frame = new JFrame();
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 450, 300);

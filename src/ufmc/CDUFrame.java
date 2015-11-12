@@ -1,3 +1,4 @@
+package ufmc;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -24,7 +25,7 @@ public class CDUFrame extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JLabel[] line;
+	public JLabel[] line;
 	
 	// Which lines are small and which are in a large Font?
 	private boolean isLargeFont[] = { true, false, true, false, true, false,
@@ -53,8 +54,8 @@ public class CDUFrame extends JFrame {
 		JLabel lblEmptyLabel = new JLabel("");
 		contentPane.add(lblEmptyLabel);
 
-		File large_font_file = new File("src\\AEROWINXFMCLARGE.TTF");
-		File small_font_file = new File("src\\AEROWINXFMCSMALL.TTF");
+		File large_font_file = new File("src/AEROWINXFMCLARGE.TTF");
+		File small_font_file = new File("src/AEROWINXFMCSMALL.TTF");
 		try {
 			largeFont = Font.createFont(Font.TRUETYPE_FONT, large_font_file);
 			smallFont = Font.createFont(Font.TRUETYPE_FONT, small_font_file);
@@ -64,12 +65,12 @@ public class CDUFrame extends JFrame {
 		int i = 0;
 		line = new JLabel[20];
 		while (i < 14) {
-			line[i] = new JLabel("0123456789012345678901234");
-			line[i].setHorizontalAlignment(SwingConstants.CENTER);
+			line[i] = new JLabel(" 0123456789012345678901234");
+			line[i].setHorizontalAlignment(SwingConstants.LEFT);
 			if (isLargeFont[i]) {
-				line[i].setFont(largeFont.deriveFont(position.width / 16f));
+				line[i].setFont(largeFont.deriveFont(position.width / 17f));
 			} else {
-				line[i].setFont(smallFont.deriveFont(position.width / 16f));
+				line[i].setFont(smallFont.deriveFont(position.width / 17f));
 			}
 			line[i].setForeground(new Color(0, 204, 0));
 			contentPane.add(line[i]);
