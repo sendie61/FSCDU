@@ -24,6 +24,7 @@ public class CDUFrame extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private static float divider = 17f;
 	private JPanel contentPane;
 	public JLabel[] line;
 	
@@ -54,8 +55,8 @@ public class CDUFrame extends JFrame {
 		JLabel lblEmptyLabel = new JLabel("");
 		contentPane.add(lblEmptyLabel);
 
-		File large_font_file = new File("src/AEROWINXFMCLARGE.TTF");
-		File small_font_file = new File("src/AEROWINXFMCSMALL.TTF");
+		File large_font_file = new File("AEROWINXFMCLARGE.TTF");
+		File small_font_file = new File("AEROWINXFMCSMALL.TTF");
 		try {
 			largeFont = Font.createFont(Font.TRUETYPE_FONT, large_font_file);
 			smallFont = Font.createFont(Font.TRUETYPE_FONT, small_font_file);
@@ -68,9 +69,9 @@ public class CDUFrame extends JFrame {
 			line[i] = new JLabel(" 0123456789012345678901234");
 			line[i].setHorizontalAlignment(SwingConstants.LEFT);
 			if (isLargeFont[i]) {
-				line[i].setFont(largeFont.deriveFont(position.width / 17f));
+				line[i].setFont(largeFont.deriveFont(position.width / divider));
 			} else {
-				line[i].setFont(smallFont.deriveFont(position.width / 17f));
+				line[i].setFont(smallFont.deriveFont(position.width / divider));
 			}
 			line[i].setForeground(new Color(0, 204, 0));
 			contentPane.add(line[i]);
@@ -84,9 +85,9 @@ public class CDUFrame extends JFrame {
 		int i = 0;
 		while (i < 14) {
 			if (isLargeFont[i]) {
-				line[i].setFont(largeFont.deriveFont(rect.width / 16f));
+				line[i].setFont(largeFont.deriveFont(rect.width / divider));
 			} else {
-				line[i].setFont(smallFont.deriveFont(rect.width / 16f));
+				line[i].setFont(smallFont.deriveFont(rect.width / divider));
 			}
 			i++;
 		}
