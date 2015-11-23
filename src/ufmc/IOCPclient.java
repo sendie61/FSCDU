@@ -150,20 +150,21 @@ public class IOCPclient implements Runnable {
 	private void printMessage(String message) {
 		String[] lines= message.split("\\:");
 		for (String line : lines){
-			String[] property= line.split("\\=");
+			if (line.length()>29)
+				line = line.substring(0, 29);
 			int lineNr=0;
 			try{
-				lineNr = Integer.parseInt(property[0]);
+				lineNr = Integer.parseInt(line.substring(0, 3));
 			}
 			catch (NumberFormatException e){
 				lineNr=0;
 			}
 			if (lineNr>=firstLineRef && lineNr<=(firstLineRef+14)){
-				if (property.length==1){
-					textFrame.line[lineNr-firstLineRef].setText("                          ");
+				if (line.length()<=4){
+					textFrame.line[lineNr-firstLineRef].setText("                           ");
 				}
 				else{
-					textFrame.line[lineNr-firstLineRef].setText(" " + property[1]);
+					textFrame.line[lineNr-firstLineRef].setText(" " + line.substring(4));
 					
 				}
 			}	
